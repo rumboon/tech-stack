@@ -1,0 +1,354 @@
+{
+  "tech_rules": [
+    {
+      "name": "fish",
+      "icon": "Fish",
+      "bg_color": "414141",
+      "color": "4aaf47",
+      "detection_cmd": "test -f fisher.yml; or test (count *.fish 2>/dev/null) -gt 0"
+    },
+    {
+      "name": "yarn",
+      "icon": "Yarn",
+      "bg_color": "2C8EBB",
+      "color": "C0DDEB",
+      "detection_cmd": "test -f yarn.lock"
+    },
+    {
+      "name": "pnpm",
+      "icon": "pnpm",
+      "bg_color": "F69220",
+      "color": "4A2C0A",
+      "detection_cmd": "test -f pnpm-lock.yaml"
+    },
+    {
+      "name": "bun",
+      "icon": "Bun",
+      "bg_color": "FBF0DF",
+      "color": "4B4843",
+      "detection_cmd": "test -f bun.lockb"
+    },
+    {
+      "name": "typescript",
+      "icon": "TS",
+      "bg_color": "3178C6",
+      "color": "C1D7EE",
+      "detection_cmd": "test -f tsconfig.json"
+    },
+    {
+      "name": "javascript",
+      "icon": "JS",
+      "bg_color": "F7DF1E",
+      "color": "4A4309",
+      "detection_cmd": "test -f jsconfig.json"
+    },
+    {
+      "name": "webpack",
+      "icon": "WP",
+      "bg_color": "8DD6F9",
+      "color": "000000",
+      "detection_cmd": "test -f webpack.config.js -o -f webpack.config.ts"
+    },
+    {
+      "name": "vite",
+      "icon": "Vite",
+      "bg_color": "646CFF",
+      "color": "FFFFFF",
+      "detection_cmd": "test -f vite.config.js -o -f vite.config.ts"
+    },
+    {
+      "name": "rollup",
+      "icon": "Rollup",
+      "bg_color": "EC4A3F",
+      "color": "FFFFFF",
+      "detection_cmd": "test -f rollup.config.js -o -f rollup.config.ts"
+    },
+    {
+      "name": "next.js",
+      "icon": "Next",
+      "bg_color": "000000",
+      "color": "FFFFFF",
+      "detection_cmd": "test -f next.config.js -o -f next.config.ts"
+    },
+    {
+      "name": "nuxt.js",
+      "icon": "Nuxt",
+      "bg_color": "00DC82",
+      "color": "000000",
+      "detection_cmd": "test -f nuxt.config.js -o -f nuxt.config.ts"
+    },
+    {
+      "name": "svelte",
+      "icon": "Svelte",
+      "bg_color": "FF3E00",
+      "color": "FFFFFF",
+      "detection_cmd": "test -f svelte.config.js"
+    },
+    {
+      "name": "astro",
+      "icon": "Astro",
+      "bg_color": "FF5D01",
+      "color": "FFFFFF",
+      "detection_cmd": "test -f astro.config.mjs -o -f astro.config.js"
+    },
+    {
+      "name": "babel",
+      "icon": "Babel",
+      "bg_color": "F9DC3E",
+      "color": "000000",
+      "detection_cmd": "test -f .babelrc -o -f babel.config.js"
+    },
+    {
+      "name": "eslint",
+      "icon": "ESLint",
+      "bg_color": "4B32C3",
+      "color": "FFFFFF",
+      "detection_cmd": "test -f .eslintrc -o -f .eslintrc.js -o -f eslint.config.js"
+    },
+    {
+      "name": "prettier",
+      "icon": "Prettier",
+      "bg_color": "F7B93E",
+      "color": "000000",
+      "detection_cmd": "test -f .prettierrc -o -f prettier.config.js"
+    },
+    {
+      "name": "gatsby",
+      "icon": "Gatsby",
+      "bg_color": "663399",
+      "color": "FFFFFF",
+      "detection_cmd": "test -f gatsby-config.js"
+    },
+    {
+      "name": "remix",
+      "icon": "Remix",
+      "bg_color": "3993FF",
+      "color": "FFFFFF",
+      "detection_cmd": "test -f remix.config.js"
+    },
+    {
+      "name": "solidjs",
+      "icon": "Solid",
+      "bg_color": "2C4F7C",
+      "color": "FFFFFF",
+      "detection_cmd": "test -f solid.config.js"
+    },
+    {
+      "name": "angular",
+      "icon": "Angular",
+      "bg_color": "DD0031",
+      "color": "FFFFFF",
+      "detection_cmd": "test -f angular.json"
+    },
+    {
+      "name": "vue.js",
+      "icon": "Vue",
+      "bg_color": "4FC08D",
+      "color": "000000",
+      "detection_cmd": "test -f vue.config.js"
+    },
+    {
+      "name": "poetry",
+      "icon": "Poetry",
+      "bg_color": "60A5FA",
+      "color": "000000",
+      "detection_cmd": "test -f poetry.lock"
+    },
+    {
+      "name": "django",
+      "icon": "Django",
+      "bg_color": "092E20",
+      "color": "FFFFFF",
+      "detection_cmd": "test -f manage.py"
+    },
+    {
+      "name": "gradle",
+      "icon": "Gradle",
+      "bg_color": "02303A",
+      "color": "FFFFFF",
+      "detection_cmd": "test -f build.gradle -o -f build.gradle.kts"
+    },
+    {
+      "name": "scala",
+      "icon": "Scala",
+      "bg_color": "DC322F",
+      "color": "FFFFFF",
+      "detection_cmd": "test -f build.sbt"
+    },
+    {
+      "name": "kotlin",
+      "icon": "Kotlin",
+      "bg_color": "7F52FF",
+      "color": "FFFFFF",
+      "detection_cmd": "count *.kt >/dev/null 2>&1"
+    },
+    {
+      "name": "flutter",
+      "icon": "Flutter",
+      "bg_color": "02569B",
+      "color": "FFFFFF",
+      "detection_cmd": "test -f pubspec.yaml"
+    },
+    {
+      "name": "android",
+      "icon": "Android",
+      "bg_color": "3DDC84",
+      "color": "000000",
+      "detection_cmd": "test -f android/app/build.gradle"
+    },
+    {
+      "name": "docker",
+      "icon": "Docker",
+      "bg_color": "2496ED",
+      "color": "FFFFFF",
+      "detection_cmd": "test -f Dockerfile -o -f docker-compose.yml -o -f docker-compose.yaml -o -f Containerfile -o -f .dockerignore"
+    },
+    {
+      "name": "terraform",
+      "icon": "TF",
+      "bg_color": "7B42BC",
+      "color": "FFFFFF",
+      "detection_cmd": "count *.tf >/dev/null 2>&1; or test -f terraform.tfvars -o -f main.tf"
+    },
+    {
+      "name": "ansible",
+      "icon": "Ansible",
+      "bg_color": "EE0000",
+      "color": "FFFFFF",
+      "detection_cmd": "test -f ansible.cfg"
+    },
+    {
+      "name": "serverless",
+      "icon": "SLS",
+      "bg_color": "FD5750",
+      "color": "FFFFFF",
+      "detection_cmd": "test -f serverless.yml -o -f serverless.yaml"
+    },
+    {
+      "name": "github_actions",
+      "icon": "GHA",
+      "bg_color": "2088FF",
+      "color": "FFFFFF",
+      "detection_cmd": "test -d .github/workflows"
+    },
+    {
+      "name": "gitlab_ci",
+      "icon": "GitLab",
+      "bg_color": "FC6D26",
+      "color": "FFFFFF",
+      "detection_cmd": "test -f .gitlab-ci.yml"
+    },
+    {
+      "name": "jenkins",
+      "icon": "Jenkins",
+      "bg_color": "D33833",
+      "color": "FFFFFF",
+      "detection_cmd": "test -f Jenkinsfile"
+    },
+    {
+      "name": "database",
+      "icon": "DB",
+      "bg_color": "336791",
+      "color": "FFFFFF",
+      "detection_cmd": "test -d migrations"
+    },
+    {
+      "name": "mongodb",
+      "icon": "Mongo",
+      "bg_color": "47A248",
+      "color": "FFFFFF",
+      "detection_cmd": "test -f mongo-init.js"
+    },
+    {
+      "name": "redis",
+      "icon": "Redis",
+      "bg_color": "DC382D",
+      "color": "FFFFFF",
+      "detection_cmd": "test -f redis.conf"
+    },
+    {
+      "name": "make",
+      "icon": "Make",
+      "bg_color": "427819",
+      "color": "FFFFFF",
+      "detection_cmd": "test -f Makefile -o -f makefile"
+    },
+    {
+      "name": "cmake",
+      "icon": "CMake",
+      "bg_color": "064F8C",
+      "color": "FFFFFF",
+      "detection_cmd": "test -f CMakeLists.txt"
+    },
+    {
+      "name": "bazel",
+      "icon": "Bazel",
+      "bg_color": "76B900",
+      "color": "000000",
+      "detection_cmd": "test -f BUILD -o -f BUILD.bazel"
+    },
+    {
+      "name": "web_server",
+      "icon": "Nginx",
+      "bg_color": "009639",
+      "color": "FFFFFF",
+      "detection_cmd": "test -f nginx.conf -o -f .htaccess -o -f Caddyfile"
+    },
+    {
+      "name": "testing",
+      "icon": "Jest",
+      "bg_color": "C21325",
+      "color": "FFFFFF",
+      "detection_cmd": "test -f jest.config.js -o -f jest.config.ts -o -f vitest.config.js -o -f vitest.config.ts"
+    },
+    {
+      "name": "cypress",
+      "icon": "Cypress",
+      "bg_color": "17202C",
+      "color": "FFFFFF",
+      "detection_cmd": "test -f cypress.config.js -o -f cypress.json"
+    },
+    {
+      "name": "playwright",
+      "icon": "PW",
+      "bg_color": "2EAD33",
+      "color": "FFFFFF",
+      "detection_cmd": "test -f playwright.config.js -o -f playwright.config.ts"
+    },
+    {
+      "name": "monorepo",
+      "icon": "Mono",
+      "bg_color": "8B5CF6",
+      "color": "FFFFFF",
+      "detection_cmd": "test -f lerna.json -o -f nx.json -o -f rush.json -o -f workspace.yaml -o -f pnpm-workspace.yaml"
+    },
+    {
+      "name": "editorconfig",
+      "icon": "EC",
+      "bg_color": "FEFEFE",
+      "color": "000000",
+      "detection_cmd": "test -f .editorconfig"
+    },
+    {
+      "name": "swift",
+      "icon": "Swift",
+      "bg_color": "FA7343",
+      "color": "FFFFFF",
+      "detection_cmd": "test -f Package.swift -o -f Podfile; or count *.xcodeproj >/dev/null 2>&1"
+    },
+    {
+      "name": "ios",
+      "icon": "iOS",
+      "bg_color": "007AFF",
+      "color": "FFFFFF",
+      "detection_cmd": "test -d ios; and count *.xcodeproj >/dev/null 2>&1"
+    },
+    {
+      "name": "kubernetes",
+      "icon": "K8s",
+      "bg_color": "326CE5",
+      "color": "FFFFFF",
+      "detection_cmd": "test -d k8s -o -d kubernetes; or test (count *.yaml 2>/dev/null) -gt 0; and ls *.yaml 2>/dev/null | grep -E '(deployment|service|ingress)' >/dev/null 2>&1"
+    }
+  ]
+}

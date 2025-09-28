@@ -1,0 +1,70 @@
+{
+  "language_rules": [
+    {
+      "name": "Node.js",
+      "icon": "Node",
+      "color": "ffffff",
+      "bg_color": "417e38",
+      "file_indicators": ["package.json", "node_modules"],
+      "version_cmd": "node -v",
+      "version_extract": "sed 's/v//'"
+    },
+    {
+      "name": "Python",
+      "icon": "Python",
+      "color": "ffd343",
+      "bg_color": "1c3b56",
+      "file_indicators": ["requirements.txt", "Pipfile", "pyproject.toml", "setup.py", "poetry.lock", "environment.yml", "manage.py", "app.py", "main.py"],
+      "version_cmd": "python3 --version || python --version",
+      "version_extract": "awk '{print $2}'"
+    },
+    {
+      "name": "Rust",
+      "icon": "Rust",
+      "color": "f74c00",
+      "bg_color": "421400",
+      "file_indicators": ["Cargo.toml", "Cargo.lock"],
+      "version_cmd": "rustc --version",
+      "version_extract": "awk '{print $2}'"
+    },
+    {
+      "name": "Go",
+      "icon": "Go",
+      "color": "ffffff",
+      "bg_color": "007d9c",
+      "file_indicators": ["go.mod", "go.sum", "Gopkg.toml"],
+      "version_cmd": "go version",
+      "version_extract": "awk '{print $3}' | sed 's/go//'"
+    },
+    {
+      "name": "PHP",
+      "icon": "🐘",
+      "file_indicators": ["composer.json", "composer.lock"],
+      "version_cmd": "php --version",
+      "version_extract": "head -n1 | awk '{print $2}' | cut -d'-' -f1"
+    },
+    {
+      "name": "Ruby",
+      "icon": "💎",
+      "file_indicators": ["Gemfile", "Rakefile", "*.gemspec"],
+      "version_cmd": "ruby --version",
+      "version_extract": "awk '{print $2}'"
+    },
+    {
+      "name": "Java",
+      "icon": "☕",
+      "file_indicators": ["pom.xml", "build.gradle", "build.gradle.kts", "build.sbt", "ivy.xml", "*.java", "*.scala", "*.kt"],
+      "version_cmd": "java -version",
+      "version_extract": "head -n1 | cut -d'\"' -f2"
+    },
+    {
+      "name": ".NET",
+      "icon": ".NET",
+      "color": "d8d8d8",
+      "bg_color": "4421b5",
+      "file_indicators": ["*.csproj", "*.fsproj", "*.vbproj", "*.sln", "packages.config", "Directory.Packages.props"],
+      "version_cmd": "dotnet --version",
+      "version_extract": "cat"
+    }
+  ]
+}
