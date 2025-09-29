@@ -1,5 +1,5 @@
 {
-  "$schema": "./rules.schema.json",
+  "$schema": "./_tech_stack_rules.schema.json",
   "rules": [
     {
       "name": "fish",

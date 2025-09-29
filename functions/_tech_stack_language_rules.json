@@ -1,5 +1,5 @@
 {
-  "$schema": "./rules.schema.json",
+  "$schema": "./_tech_stack_rules.schema.json",
   "rules": [
     {
       "name": "Node.js",
@@ -17,7 +17,7 @@
     },
     {
       "name": "Rust",
-      "icon": "Rust",
+      "icon": "Rst",
       "color": "f74c00",
       "bg_color": "421400",
       "file_indicators": ["Cargo.toml", "Cargo.lock"]

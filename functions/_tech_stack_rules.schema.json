@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://github.com/fish-plugins/tech-stack/rules.schema.json",
+  "$id": "https://github.com/fish-plugins/tech-stack/_tech_stack_rules.schema.json",
   "title": "Tech Stack Rules",
   "description": "Schema for technology detection rules",
   "type": "object",
