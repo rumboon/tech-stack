@@ -338,13 +338,6 @@
       "file_indicators": ["Package.swift", "Podfile", "*.xcodeproj"]
     },
     {
-      "name": "ios",
-      "icon": "iOS",
-      "bg_color": "007AFF",
-      "color": "FFFFFF",
-      "file_indicators": ["ios"]
-    },
-    {
       "name": "kubernetes",
       "icon": "K8s",
       "bg_color": "326CE5",
