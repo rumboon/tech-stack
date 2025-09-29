@@ -60,25 +60,19 @@ function _tech_stack_worker --description 'Background worker function for compre
 
             if test $found_indicator = true
                 # Try to get version
+                set -l lang_version
                 if command -v (echo $version_cmd | awk '{print $1}') >/dev/null 2>&1
-                    set -l lang_version (eval $version_cmd 2>/dev/null | eval $version_extract 2>/dev/null)
-                    if test -n "$lang_version"
-                        set -a lang_techs "$name"_"v$lang_version]"
-                        set -a lang_icons "[$icon "
-                        set -a lang_colors $color
-                        set -a lang_bg_colors $bg_color
-                    else
-                        set -a lang_techs $name
-                        set -a lang_icons $icon
-                        set -a lang_colors $color
-                        set -a lang_bg_colors $bg_color
-                    end
-                else
-                    set -a lang_techs $name
-                    set -a lang_icons $icon
-                    set -a lang_colors $color
-                    set -a lang_bg_colors $bg_color
+                    set lang_version (eval $version_cmd 2>/dev/null | eval $version_extract 2>/dev/null)
                 end
+
+                if test -n "$lang_version"
+                    set -a lang_techs "$name"_"v$lang_version]"
+                else
+                    set -a lang_techs "$name"_"?]"
+                end
+                set -a lang_icons "[$icon "
+                set -a lang_colors $color
+                set -a lang_bg_colors $bg_color
             end
         end
     end

@@ -5,7 +5,7 @@
       "icon": "Fish",
       "bg_color": "414141",
       "color": "4aaf47",
-      "detection_cmd": "test -f fisher.yml; or test (count *.fish 2>/dev/null) -gt 0"
+      "detection_cmd": "test (count *.fish 2>/dev/null) -gt 0"
     },
     {
       "name": "yarn",

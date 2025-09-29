@@ -11,7 +11,7 @@
     },
     {
       "name": "Python",
-      "icon": "Python",
+      "icon": "Py",
       "color": "ffd343",
       "bg_color": "1c3b56",
       "file_indicators": ["requirements.txt", "Pipfile", "pyproject.toml", "setup.py", "poetry.lock", "environment.yml", "manage.py", "app.py", "main.py"],
@@ -20,7 +20,7 @@
     },
     {
       "name": "Rust",
-      "icon": "Rust",
+      "icon": "Rst",
       "color": "f74c00",
       "bg_color": "421400",
       "file_indicators": ["Cargo.toml", "Cargo.lock"],
@@ -38,24 +38,30 @@
     },
     {
       "name": "PHP",
-      "icon": "🐘",
+      "icon": "PHP",
+      "color": "ffffff",
+      "bg_color": "4f5b93",
       "file_indicators": ["composer.json", "composer.lock"],
       "version_cmd": "php --version",
       "version_extract": "head -n1 | awk '{print $2}' | cut -d'-' -f1"
     },
     {
       "name": "Ruby",
-      "icon": "💎",
+      "icon": "Ruby",
+      "color": "ffffff",
+      "bg_color": "cc342d",
       "file_indicators": ["Gemfile", "Rakefile", "*.gemspec"],
       "version_cmd": "ruby --version",
       "version_extract": "awk '{print $2}'"
     },
     {
       "name": "Java",
-      "icon": "☕",
+      "icon": "Java",
+      "color": "f89917",
+      "bg_color": "5283a3",
       "file_indicators": ["pom.xml", "build.gradle", "build.gradle.kts", "build.sbt", "ivy.xml", "*.java", "*.scala", "*.kt"],
-      "version_cmd": "java -version",
-      "version_extract": "head -n1 | cut -d'\"' -f2"
+      "version_cmd": "javac -version",
+      "version_extract": "awk '{print $2}'"
     },
     {
       "name": ".NET",
