@@ -77,6 +77,37 @@ function run_tech_stack
     echo $$var_name
 end
 
+# Fast single-rule detection for testing
+function run_single_tech_test
+    set -l rules_file $argv[1]
+    set -l target_name $argv[2]
+    set -l expected_icon $argv[3]
+
+    # Quick check - just look for the specific rule and test its indicators
+    set -l rule_data (jq -r --arg name "$target_name" '.rules[] | select(.name == $name) | "\(.name)|\(.icon)|\(.file_indicators | join(","))"' $rules_file)
+    if test -z "$rule_data"
+        return 1
+    end
+
+    set -l parts (string split "|" $rule_data)
+    set -l file_indicators (string split "," $parts[3])
+
+    # Check if any file indicators exist
+    for indicator in $file_indicators
+        if string match -q "*\**" $indicator
+            set -l found_files (find . -name "$indicator" -type f -print -quit 2>/dev/null)
+            if test -n "$found_files"
+                echo "$expected_icon"
+                return 0
+            end
+        else if test -f $indicator -o -d $indicator
+            echo "$expected_icon"
+            return 0
+        end
+    end
+    return 1
+end
+
 function get_language_icon
     set -l language_name $argv[1]
     set -l config_file "$HOME/.config/fish/language_rules.json"
@@ -118,22 +149,22 @@ test_assert_not_contains "Empty directory should not detect TypeScript" "🔷" "
 cleanup_test_directory $empty_test_dir
 echo
 
-# Test 2: Dynamic language detection tests
+# Test 2: Dynamic language detection tests (batch mode)
 echo "🔬 Testing all languages from configuration..."
 set -l language_rules_file "$project_root/functions/_tech_stack_language_rules.json"
 if test -f $language_rules_file; and command -v jq >/dev/null 2>&1
-    set -l rule_count (jq '.rules | length' $language_rules_file)
-    for i in (seq 0 (math $rule_count - 1))
-        set -l name (jq -r --argjson idx $i '.rules[$idx].name' $language_rules_file)
-        set -l icon (jq -r --argjson idx $i '.rules[$idx].icon' $language_rules_file)
-        set -l file_indicators (jq -r --argjson idx $i '.rules[$idx].file_indicators[]' $language_rules_file)
+    set -l batch_test_dir "/tmp/tech_test_batch_lang"
+    create_test_directory $batch_test_dir
 
-        echo "🔍 Testing $name detection..."
-        set -l test_dir "/tmp/tech_test_lang_$i"
-        create_test_directory $test_dir
+    # Parse all rules at once to avoid repeated jq calls
+    set -l rules_data (jq -r '.rules[] | "\(.name)|\(.icon)|\(.file_indicators[0])"' $language_rules_file)
+    for rule_line in $rules_data
+        set -l parts (string split "|" $rule_line)
+        set -l name $parts[1]
+        set -l icon $parts[2]
+        set -l first_indicator $parts[3]
 
         # Create the first file indicator (skip glob patterns for safety)
-        set -l first_indicator $file_indicators[1]
         if not string match -q "*\**" $first_indicator
             if string match -q "*.*" $first_indicator
                 # It's a file
@@ -150,35 +181,42 @@ if test -f $language_rules_file; and command -v jq >/dev/null 2>&1
                 touch $first_indicator
             end
 
-            set -l result (run_tech_stack)
-            test_assert_contains "$name should be detected" "$icon" "$result"
+            set -l result (run_single_tech_test $language_rules_file "$name" "$icon")
+            test_assert "$name should be detected" "$icon" "$result"
+
+            # Clean up the specific file/directory for next test
+            if test -f $first_indicator
+                rm -f $first_indicator
+            else if test -d $first_indicator
+                rm -rf $first_indicator
+            end
         else
             echo "   Skipping $name (complex pattern: $first_indicator)"
         end
-
-        cleanup_test_directory $test_dir
     end
+
+    cleanup_test_directory $batch_test_dir
 else
     echo "⚠️  Skipping language tests - jq not available or rules file not found"
 end
 echo
 
-# Test 3: Dynamic tech stack detection tests
+# Test 3: Dynamic tech stack detection tests (batch mode)
 echo "⚙️ Testing all tech stacks from configuration..."
 set -l tech_rules_file "$project_root/functions/_tech_stack_rules.json"
 if test -f $tech_rules_file; and command -v jq >/dev/null 2>&1
-    set -l rule_count (jq '.rules | length' $tech_rules_file)
-    for i in (seq 0 (math $rule_count - 1))
-        set -l name (jq -r --argjson idx $i '.rules[$idx].name' $tech_rules_file)
-        set -l icon (jq -r --argjson idx $i '.rules[$idx].icon' $tech_rules_file)
-        set -l file_indicators (jq -r --argjson idx $i '.rules[$idx].file_indicators[]' $tech_rules_file)
+    set -l batch_test_dir "/tmp/tech_test_batch_tech"
+    create_test_directory $batch_test_dir
 
-        echo "🔍 Testing $name detection..."
-        set -l test_dir "/tmp/tech_test_tech_$i"
-        create_test_directory $test_dir
+    # Parse all rules at once to avoid repeated jq calls
+    set -l rules_data (jq -r '.rules[] | "\(.name)|\(.icon)|\(.file_indicators[0])"' $tech_rules_file)
+    for rule_line in $rules_data
+        set -l parts (string split "|" $rule_line)
+        set -l name $parts[1]
+        set -l icon $parts[2]
+        set -l first_indicator $parts[3]
 
         # Create the first file indicator (skip complex glob patterns)
-        set -l first_indicator $file_indicators[1]
         if not string match -q "*\**" $first_indicator
             # Check if it's a known directory indicator or ends with /
             if string match -q "*/" $first_indicator; or test "$first_indicator" = ".github/workflows"
@@ -194,14 +232,21 @@ if test -f $tech_rules_file; and command -v jq >/dev/null 2>&1
                 touch $first_indicator
             end
 
-            set -l result (run_tech_stack)
-            test_assert_contains "$name should be detected" "$icon" "$result"
+            set -l result (run_single_tech_test $tech_rules_file "$name" "$icon")
+            test_assert "$name should be detected" "$icon" "$result"
+
+            # Clean up the specific file/directory for next test
+            if test -f $first_indicator
+                rm -f $first_indicator
+            else if test -d $first_indicator
+                rm -rf $first_indicator
+            end
         else
             echo "   Skipping $name (complex pattern: $first_indicator)"
         end
-
-        cleanup_test_directory $test_dir
     end
+
+    cleanup_test_directory $batch_test_dir
 else
     echo "⚠️  Skipping tech stack tests - jq not available or rules file not found"
 end

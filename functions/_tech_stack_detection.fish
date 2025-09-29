@@ -48,13 +48,15 @@ function _tech_stack_detection --description 'Detect technologies from rules fil
         return 1
     end
 
-    set -l rule_count (jq '.rules | length' $rules_file)
-    for i in (seq 0 (math $rule_count - 1))
-        set -l name (jq -r ".rules[$i].name" $rules_file)
-        set -l icon (jq -r ".rules[$i].icon" $rules_file)
-        set -l color (jq -r ".rules[$i].color // \"white\"" $rules_file)
-        set -l bg_color (jq -r ".rules[$i].bg_color // \"black\"" $rules_file)
-        set -l file_indicators (jq -r ".rules[$i].file_indicators[]" $rules_file)
+    # Parse all rules at once to avoid repeated jq calls
+    set -l rules_data (jq -r '.rules[] | "\(.name)|\(.icon)|\(.color // "white")|\(.bg_color // "black")|\(.file_indicators | join(","))"' $rules_file)
+    for rule_line in $rules_data
+        set -l parts (string split "|" $rule_line)
+        set -l name $parts[1]
+        set -l icon $parts[2]
+        set -l color $parts[3]
+        set -l bg_color $parts[4]
+        set -l file_indicators (string split "," $parts[5])
 
         if _check_file_indicators $file_indicators
             if _apply_special_rules $name "true"
