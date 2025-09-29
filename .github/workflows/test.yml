@@ -1,0 +1,31 @@
+name: Run Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Install Fish shell
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y fish jq
+
+    - name: Set up tech-stack environment
+      run: |
+        export TECH_STACK_CONFIG_DIR="$PWD/functions"
+        echo "TECH_STACK_CONFIG_DIR=$PWD/functions" >> $GITHUB_ENV
+
+    - name: Run tests
+      shell: fish {0}
+      run: |
+        set -x TECH_STACK_CONFIG_DIR $PWD/functions
+        fish test_tech_stack.fish

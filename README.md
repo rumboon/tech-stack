@@ -32,7 +32,16 @@ echo $_tech_info_git
 
 - `_tech_stack_async` - Main async detection function
 - `_tech_stack_worker` - Background worker for detection
+- `_tech_stack_detection` - Core technology detection logic
+- `_tech_stack_formatting` - Output formatting
+- `_tech_stack_version` - Version detection for languages
 - `_tech_stack_cleanup` - Cleanup function for processes and variables
+
+## Configuration
+
+Technology detection rules are defined in JSON files:
+- `functions/_tech_stack_language_rules.json` - Language detection rules (with version support)
+- `functions/_tech_stack_rules.json` - Tech stack/framework detection rules
 
 ## Testing
 
@@ -40,3 +49,9 @@ Run the test suite:
 ```fish
 fish test_tech_stack.fish
 ```
+
+The test suite includes:
+- Dynamic testing of all configured languages and tech stacks
+- Multi-technology detection validation
+- JSON configuration validation
+- Automatic testing via GitHub Actions CI
