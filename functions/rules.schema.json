@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/fish-plugins/tech-stack/rules.schema.json",
+  "title": "Tech Stack Rules",
+  "description": "Schema for technology detection rules",
+  "type": "object",
+  "properties": {
+    "rules": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/rule"
+      }
+    }
+  },
+  "required": ["rules"],
+  "definitions": {
+    "rule": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Display name of the technology"
+        },
+        "icon": {
+          "type": "string",
+          "description": "Short icon text to display"
+        },
+        "color": {
+          "type": "string",
+          "pattern": "^[0-9a-fA-F]{6}$",
+          "description": "Foreground color in hex format (without #)"
+        },
+        "bg_color": {
+          "type": "string",
+          "pattern": "^[0-9a-fA-F]{6}$",
+          "description": "Background color in hex format (without #)"
+        },
+        "file_indicators": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "description": "List of files/directories/patterns that indicate this technology"
+        }
+      },
+      "required": ["name", "icon", "color", "bg_color", "file_indicators"],
+      "additionalProperties": false
+    }
+  }
+}

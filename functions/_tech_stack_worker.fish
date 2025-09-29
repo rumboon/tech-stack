@@ -1,3 +1,45 @@
+function _get_language_version --description 'Get version for supported languages'
+    set -l language $argv[1]
+
+    switch $language
+        case "Node.js"
+            if command -v node >/dev/null 2>&1
+                node -v 2>/dev/null | sed 's/v//'
+            end
+        case "Python"
+            if command -v python3 >/dev/null 2>&1
+                python3 --version 2>/dev/null | awk '{print $2}'
+            else if command -v python >/dev/null 2>&1
+                python --version 2>/dev/null | awk '{print $2}'
+            end
+        case "Rust"
+            if command -v rustc >/dev/null 2>&1
+                rustc --version 2>/dev/null | awk '{print $2}'
+            end
+        case "Go"
+            if command -v go >/dev/null 2>&1
+                go version 2>/dev/null | awk '{print $3}' | sed 's/go//'
+            end
+        case "PHP"
+            if command -v php >/dev/null 2>&1
+                php --version 2>/dev/null | head -n1 | awk '{print $2}' | cut -d'-' -f1
+            end
+        case "Ruby"
+            if command -v ruby >/dev/null 2>&1
+                ruby --version 2>/dev/null | awk '{print $2}'
+            end
+        case "Java"
+            if command -v javac >/dev/null 2>&1
+                javac -version 2>/dev/null | awk '{print $2}'
+            end
+        case ".NET"
+            if command -v dotnet >/dev/null 2>&1
+                dotnet --version 2>/dev/null
+            end
+    end
+end
+
+
 function _tech_stack_worker --description 'Background worker function for comprehensive technology detection'
     # Get the variable name from command line argument
     set tech_var_name $argv[1]
@@ -33,22 +75,21 @@ function _tech_stack_worker --description 'Background worker function for compre
 
     # Process language detection (with versions) using jq
     if test -f $language_rules_json; and command -v jq >/dev/null 2>&1
-        set -l lang_count (jq '.language_rules | length' $language_rules_json)
+        set -l lang_count (jq '.rules | length' $language_rules_json)
         for i in (seq 0 (math $lang_count - 1))
-            set -l name (jq -r ".language_rules[$i].name" $language_rules_json)
-            set -l icon (jq -r ".language_rules[$i].icon" $language_rules_json)
-            set -l color (jq -r ".language_rules[$i].color // \"white\"" $language_rules_json)
-            set -l bg_color (jq -r ".language_rules[$i].bg_color // \"black\"" $language_rules_json)
-            set -l file_indicators (jq -r ".language_rules[$i].file_indicators[]" $language_rules_json)
-            set -l version_cmd (jq -r ".language_rules[$i].version_cmd" $language_rules_json)
-            set -l version_extract (jq -r ".language_rules[$i].version_extract" $language_rules_json)
+            set -l name (jq -r ".rules[$i].name" $language_rules_json)
+            set -l icon (jq -r ".rules[$i].icon" $language_rules_json)
+            set -l color (jq -r ".rules[$i].color // \"white\"" $language_rules_json)
+            set -l bg_color (jq -r ".rules[$i].bg_color // \"black\"" $language_rules_json)
+            set -l file_indicators (jq -r ".rules[$i].file_indicators[]" $language_rules_json)
 
             # Check if any file indicators exist
             set -l found_indicator false
             for indicator in $file_indicators
                 # Handle glob patterns (containing asterisks)
                 if string match -q "*\**" $indicator
-                    if eval "count $indicator >/dev/null 2>&1"
+                    # Use find for reliable glob pattern matching
+                    if find . -name "$indicator" -type f -print -quit | read -l
                         set found_indicator true
                         break
                     end
@@ -59,11 +100,8 @@ function _tech_stack_worker --description 'Background worker function for compre
             end
 
             if test $found_indicator = true
-                # Try to get version
-                set -l lang_version
-                if command -v (echo $version_cmd | awk '{print $1}') >/dev/null 2>&1
-                    set lang_version (eval $version_cmd 2>/dev/null | eval $version_extract 2>/dev/null)
-                end
+                # Get version using safe function
+                set -l lang_version (_get_language_version $name)
 
                 if test -n "$lang_version"
                     set -a lang_techs "$name"_"v$lang_version]"
@@ -77,21 +115,56 @@ function _tech_stack_worker --description 'Background worker function for compre
         end
     end
 
-    # Process simple rule-based technologies using jq directly
+    # Process tech stack detection using file indicators
     if test -f $tech_rules_json; and command -v jq >/dev/null 2>&1
-        set -l rule_count (jq '.tech_rules | length' $tech_rules_json)
+        set -l rule_count (jq '.rules | length' $tech_rules_json)
         for i in (seq 0 (math $rule_count - 1))
-            set -l name (jq -r ".tech_rules[$i].name" $tech_rules_json)
-            set -l icon (jq -r ".tech_rules[$i].icon" $tech_rules_json)
-            set -l color (jq -r ".tech_rules[$i].color // \"white\"" $tech_rules_json)
-            set -l bg_color (jq -r ".tech_rules[$i].bg_color // \"black\"" $tech_rules_json)
-            set -l cmd (jq -r ".tech_rules[$i].detection_cmd" $tech_rules_json)
+            set -l name (jq -r ".rules[$i].name" $tech_rules_json)
+            set -l icon (jq -r ".rules[$i].icon" $tech_rules_json)
+            set -l color (jq -r ".rules[$i].color // \"white\"" $tech_rules_json)
+            set -l bg_color (jq -r ".rules[$i].bg_color // \"black\"" $tech_rules_json)
+            set -l file_indicators (jq -r ".rules[$i].file_indicators[]" $tech_rules_json)
 
-            if eval $cmd
-                set -a tech_techs $name
-                set -a tech_icons $icon
-                set -a tech_colors $color
-                set -a tech_bg_colors $bg_color
+            # Check if any file indicators exist
+            set -l found_indicator false
+            for indicator in $file_indicators
+                # Handle glob patterns (containing asterisks)
+                if string match -q "*\**" $indicator
+                    # Use find for reliable glob pattern matching
+                    if find . -name "$indicator" -type f -print -quit | read -l
+                        set found_indicator true
+                        break
+                    end
+                else if test -f $indicator -o -d $indicator
+                    set found_indicator true
+                    break
+                end
+            end
+
+            # Special handling for complex detection rules
+            if test $found_indicator = true
+                # Apply special logic for certain technologies
+                set -l should_add true
+
+                # iOS requires BOTH ios directory AND xcodeproj files
+                if test "$name" = "ios"
+                    set should_add false
+                    if test -d ios
+                        if ls *.xcodeproj >/dev/null 2>&1
+                            set should_add true
+                        end
+                    end
+                # Swift can be detected by Package.swift, Podfile, OR xcodeproj files
+                else if test "$name" = "swift"
+                    # Default found_indicator logic is fine for swift
+                end
+
+                if test $should_add = true
+                    set -a tech_techs $name
+                    set -a tech_icons $icon
+                    set -a tech_colors $color
+                    set -a tech_bg_colors $bg_color
+                end
             end
         end
     end
