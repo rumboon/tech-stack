@@ -17,13 +17,17 @@
     "rule": {
       "type": "object",
       "properties": {
-        "name": {
+        "id": {
           "type": "string",
-          "description": "Display name of the technology"
+          "description": "Identification name"
         },
         "icon": {
           "type": "string",
           "description": "Short icon text to display"
+        },
+        "label": {
+          "type": "string",
+          "description": "Display name of the technology"
         },
         "color": {
           "type": "string",
@@ -44,7 +48,7 @@
           "description": "List of files/directories/patterns that indicate this technology"
         }
       },
-      "required": ["name", "icon", "color", "bg_color", "file_indicators"],
+      "required": ["id", "icon", "label", "color", "bg_color", "file_indicators"],
       "additionalProperties": false
     }
   }

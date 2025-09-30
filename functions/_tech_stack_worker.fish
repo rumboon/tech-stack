@@ -28,13 +28,13 @@ function _tech_stack_worker --description 'Technology detection worker that outp
     # Detect languages (with versions)
     set -l language_results
     if test -f $rules_languages_json
-        set language_results (_tech_stack_detection $rules_languages_json "true")
+        set language_results (_tech_stack_detection $rules_languages_json)
     end
 
-    # Detect tech stacks (without versions)
+    # Detect tech stacks (with versions)
     set -l tech_results
     if test -f $rules_mods_json
-        set tech_results (_tech_stack_detection $rules_mods_json "false")
+        set tech_results (_tech_stack_detection $rules_mods_json)
     end
 
     # Format and set separate variables

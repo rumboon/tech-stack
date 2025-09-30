@@ -2,347 +2,395 @@
   "$schema": "./_tech_stack_rules.schema.json",
   "rules": [
     {
-      "name": "fish",
-      "icon": "Fish",
+      "id": "fish",
+      "icon": "🐚",
+      "label": "Fish",
       "bg_color": "414141",
       "color": "4aaf47",
       "file_indicators": ["*.fish"]
     },
     {
-      "name": "yarn",
-      "icon": "Yarn",
+      "id": "yarn",
+      "icon": "🧶",
+      "label": "Yarn",
       "bg_color": "2C8EBB",
       "color": "C0DDEB",
       "file_indicators": ["yarn.lock"]
     },
     {
-      "name": "pnpm",
-      "icon": "pnpm",
+      "id": "pnpm",
+      "icon": "📦",
+      "label": "pnpm",
       "bg_color": "F69220",
       "color": "4A2C0A",
       "file_indicators": ["pnpm-lock.yaml"]
     },
     {
-      "name": "bun",
-      "icon": "Bun",
+      "id": "bun",
+      "icon": "🥟",
+      "label": "Bun",
       "bg_color": "FBF0DF",
       "color": "4B4843",
       "file_indicators": ["bun.lockb"]
     },
     {
-      "name": "typescript",
+      "id": "typescript",
       "icon": "TS",
+      "label": "TS",
       "bg_color": "3178C6",
       "color": "C1D7EE",
       "file_indicators": ["tsconfig.json"]
     },
     {
-      "name": "javascript",
+      "id": "javascript",
       "icon": "JS",
+      "label": "JS",
       "bg_color": "F7DF1E",
       "color": "4A4309",
       "file_indicators": ["jsconfig.json"]
     },
     {
-      "name": "webpack",
-      "icon": "WP",
+      "id": "webpack",
+      "icon": "📦",
+      "label": "WP",
       "bg_color": "8DD6F9",
       "color": "000000",
       "file_indicators": ["webpack.config.js", "webpack.config.ts"]
     },
     {
-      "name": "vite",
-      "icon": "Vite",
+      "id": "vite",
+      "icon": "⚡",
+      "label": "Vite",
       "bg_color": "646CFF",
       "color": "FFFFFF",
       "file_indicators": ["vite.config.js", "vite.config.ts"]
     },
     {
-      "name": "rollup",
-      "icon": "Rollup",
+      "id": "rollup",
+      "icon": "📦",
+      "label": "Rollup",
       "bg_color": "EC4A3F",
       "color": "FFFFFF",
       "file_indicators": ["rollup.config.js", "rollup.config.ts"]
     },
     {
-      "name": "next.js",
-      "icon": "Next",
+      "id": "next.js",
+      "icon": "▲",
+      "label": "Next",
       "bg_color": "000000",
       "color": "FFFFFF",
       "file_indicators": ["next.config.js", "next.config.ts"]
     },
     {
-      "name": "nuxt.js",
-      "icon": "Nuxt",
+      "id": "nuxt.js",
+      "icon": "💚",
+      "label": "Nuxt",
       "bg_color": "00DC82",
       "color": "000000",
       "file_indicators": ["nuxt.config.js", "nuxt.config.ts"]
     },
     {
-      "name": "svelte",
-      "icon": "Svelte",
+      "id": "svelte",
+      "icon": "🔥",
+      "label": "Svelte",
       "bg_color": "FF3E00",
       "color": "FFFFFF",
       "file_indicators": ["svelte.config.js"]
     },
     {
-      "name": "astro",
-      "icon": "Astro",
+      "id": "astro",
+      "icon": "🚀",
+      "label": "Astro",
       "bg_color": "FF5D01",
       "color": "FFFFFF",
       "file_indicators": ["astro.config.mjs", "astro.config.js"]
     },
     {
-      "name": "babel",
-      "icon": "Babel",
+      "id": "babel",
+      "icon": "🗼",
+      "label": "Babel",
       "bg_color": "F9DC3E",
       "color": "000000",
       "file_indicators": [".babelrc", "babel.config.js"]
     },
     {
-      "name": "eslint",
-      "icon": "ESLint",
+      "id": "eslint",
+      "icon": "✓",
+      "label": "ESLint",
       "bg_color": "4B32C3",
       "color": "FFFFFF",
       "file_indicators": [".eslintrc", ".eslintrc.js", "eslint.config.js"]
     },
     {
-      "name": "prettier",
-      "icon": "Prettier",
+      "id": "prettier",
+      "icon": "✨",
+      "label": "Prettier",
       "bg_color": "F7B93E",
       "color": "000000",
       "file_indicators": [".prettierrc", "prettier.config.js"]
     },
     {
-      "name": "gatsby",
-      "icon": "Gatsby",
+      "id": "gatsby",
+      "icon": "G",
+      "label": "Gatsby",
       "bg_color": "663399",
       "color": "FFFFFF",
       "file_indicators": ["gatsby-config.js"]
     },
     {
-      "name": "remix",
-      "icon": "Remix",
+      "id": "remix",
+      "icon": "💿",
+      "label": "Remix",
       "bg_color": "3993FF",
       "color": "FFFFFF",
       "file_indicators": ["remix.config.js"]
     },
     {
-      "name": "solidjs",
-      "icon": "Solid",
+      "id": "solidjs",
+      "icon": "◬",
+      "label": "Solid",
       "bg_color": "2C4F7C",
       "color": "FFFFFF",
       "file_indicators": ["solid.config.js"]
     },
     {
-      "name": "angular",
-      "icon": "Angular",
+      "id": "angular",
+      "icon": "A",
+      "label": "Angular",
       "bg_color": "DD0031",
       "color": "FFFFFF",
       "file_indicators": ["angular.json"]
     },
     {
-      "name": "vue.js",
-      "icon": "Vue",
+      "id": "vue.js",
+      "icon": "V",
+      "label": "Vue",
       "bg_color": "4FC08D",
       "color": "000000",
       "file_indicators": ["vue.config.js"]
     },
     {
-      "name": "poetry",
-      "icon": "Poetry",
+      "id": "poetry",
+      "icon": "📝",
+      "label": "Poetry",
       "bg_color": "60A5FA",
       "color": "000000",
       "file_indicators": ["poetry.lock"]
     },
     {
-      "name": "django",
-      "icon": "Django",
+      "id": "django",
+      "icon": "🎸",
+      "label": "Django",
       "bg_color": "092E20",
       "color": "FFFFFF",
       "file_indicators": ["manage.py"]
     },
     {
-      "name": "gradle",
-      "icon": "Gradle",
+      "id": "gradle",
+      "icon": "G",
+      "label": "Gradle",
       "bg_color": "02303A",
       "color": "FFFFFF",
       "file_indicators": ["build.gradle", "build.gradle.kts"]
     },
     {
-      "name": "scala",
-      "icon": "Scala",
+      "id": "scala",
+      "icon": "S",
+      "label": "Scala",
       "bg_color": "DC322F",
       "color": "FFFFFF",
       "file_indicators": ["build.sbt"]
     },
     {
-      "name": "kotlin",
-      "icon": "Kotlin",
+      "id": "kotlin",
+      "icon": "K",
+      "label": "Kotlin",
       "bg_color": "7F52FF",
       "color": "FFFFFF",
       "file_indicators": ["*.kt"]
     },
     {
-      "name": "flutter",
-      "icon": "Flutter",
+      "id": "flutter",
+      "icon": "🦋",
+      "label": "Flutter",
       "bg_color": "02569B",
       "color": "FFFFFF",
       "file_indicators": ["pubspec.yaml"]
     },
     {
-      "name": "android",
-      "icon": "Android",
+      "id": "android",
+      "icon": "🤖",
+      "label": "Android",
       "bg_color": "3DDC84",
       "color": "000000",
       "file_indicators": ["android/app/build.gradle"]
     },
     {
-      "name": "docker",
-      "icon": "Docker",
+      "id": "docker",
+      "icon": "🐳",
+      "label": "Docker",
       "bg_color": "2496ED",
       "color": "FFFFFF",
       "file_indicators": ["Dockerfile", "docker-compose.yml", "docker-compose.yaml", "Containerfile", ".dockerignore"]
     },
     {
-      "name": "terraform",
-      "icon": "TF",
+      "id": "terraform",
+      "icon": "🏗️",
+      "label": "TF",
       "bg_color": "7B42BC",
       "color": "FFFFFF",
       "file_indicators": ["*.tf", "terraform.tfvars", "main.tf"]
     },
     {
-      "name": "ansible",
-      "icon": "Ansible",
+      "id": "ansible",
+      "icon": "⚙️",
+      "label": "Ansible",
       "bg_color": "EE0000",
       "color": "FFFFFF",
       "file_indicators": ["ansible.cfg"]
     },
     {
-      "name": "serverless",
-      "icon": "SLS",
+      "id": "serverless",
+      "icon": "λ",
+      "label": "SLS",
       "bg_color": "FD5750",
       "color": "FFFFFF",
       "file_indicators": ["serverless.yml", "serverless.yaml"]
     },
     {
-      "name": "github_actions",
-      "icon": "GHA",
+      "id": "github_actions",
+      "icon": "⚡",
+      "label": "GHA",
       "bg_color": "2088FF",
       "color": "FFFFFF",
       "file_indicators": [".github/workflows"]
     },
     {
-      "name": "gitlab_ci",
-      "icon": "GitLab",
+      "id": "gitlab_ci",
+      "icon": "🦊",
+      "label": "GitLab",
       "bg_color": "FC6D26",
       "color": "FFFFFF",
       "file_indicators": [".gitlab-ci.yml"]
     },
     {
-      "name": "jenkins",
-      "icon": "Jenkins",
+      "id": "jenkins",
+      "icon": "👨‍🔧",
+      "label": "Jenkins",
       "bg_color": "D33833",
       "color": "FFFFFF",
       "file_indicators": ["Jenkinsfile"]
     },
     {
-      "name": "database",
-      "icon": "DB",
+      "id": "database",
+      "icon": "🗄️",
+      "label": "DB",
       "bg_color": "336791",
       "color": "FFFFFF",
       "file_indicators": ["migrations"]
     },
     {
-      "name": "mongodb",
-      "icon": "Mongo",
+      "id": "mongodb",
+      "icon": "🍃",
+      "label": "Mongo",
       "bg_color": "47A248",
       "color": "FFFFFF",
       "file_indicators": ["mongo-init.js"]
     },
     {
-      "name": "redis",
-      "icon": "Redis",
+      "id": "redis",
+      "icon": "⚡",
+      "label": "Redis",
       "bg_color": "DC382D",
       "color": "FFFFFF",
       "file_indicators": ["redis.conf"]
     },
     {
-      "name": "make",
-      "icon": "Make",
+      "id": "make",
+      "icon": "🔨",
+      "label": "Make",
       "bg_color": "427819",
       "color": "FFFFFF",
       "file_indicators": ["Makefile", "makefile"]
     },
     {
-      "name": "cmake",
-      "icon": "CMake",
+      "id": "cmake",
+      "icon": "🔧",
+      "label": "CMake",
       "bg_color": "064F8C",
       "color": "FFFFFF",
       "file_indicators": ["CMakeLists.txt"]
     },
     {
-      "name": "bazel",
-      "icon": "Bazel",
+      "id": "bazel",
+      "icon": "🏗️",
+      "label": "Bazel",
       "bg_color": "76B900",
       "color": "000000",
       "file_indicators": ["BUILD", "BUILD.bazel"]
     },
     {
-      "name": "web_server",
-      "icon": "Nginx",
+      "id": "web_server",
+      "icon": "🌐",
+      "label": "Nginx",
       "bg_color": "009639",
       "color": "FFFFFF",
       "file_indicators": ["nginx.conf", ".htaccess", "Caddyfile"]
     },
     {
-      "name": "testing",
-      "icon": "Jest",
+      "id": "testing",
+      "icon": "🧪",
+      "label": "Jest",
       "bg_color": "C21325",
       "color": "FFFFFF",
       "file_indicators": ["jest.config.js", "jest.config.ts", "vitest.config.js", "vitest.config.ts"]
     },
     {
-      "name": "cypress",
-      "icon": "Cypress",
+      "id": "cypress",
+      "icon": "🌲",
+      "label": "Cypress",
       "bg_color": "17202C",
       "color": "FFFFFF",
       "file_indicators": ["cypress.config.js", "cypress.json"]
     },
     {
-      "name": "playwright",
-      "icon": "PW",
+      "id": "playwright",
+      "icon": "🎭",
+      "label": "PW",
       "bg_color": "2EAD33",
       "color": "FFFFFF",
       "file_indicators": ["playwright.config.js", "playwright.config.ts"]
     },
     {
-      "name": "monorepo",
-      "icon": "Mono",
+      "id": "monorepo",
+      "icon": "📦",
+      "label": "Mono",
       "bg_color": "8B5CF6",
       "color": "FFFFFF",
       "file_indicators": ["lerna.json", "nx.json", "rush.json", "workspace.yaml", "pnpm-workspace.yaml"]
     },
     {
-      "name": "editorconfig",
-      "icon": "EC",
+      "id": "editorconfig",
+      "icon": "⚙️",
+      "label": "EC",
       "bg_color": "FEFEFE",
       "color": "000000",
       "file_indicators": [".editorconfig"]
     },
     {
-      "name": "swift",
-      "icon": "Swift",
+      "id": "swift",
+      "icon": "🦅",
+      "label": "Swift",
       "bg_color": "FA7343",
       "color": "FFFFFF",
       "file_indicators": ["Package.swift", "Podfile", "*.xcodeproj"]
     },
     {
-      "name": "kubernetes",
-      "icon": "K8s",
+      "id": "kubernetes",
+      "icon": "☸️",
+      "label": "K8s",
       "bg_color": "326CE5",
       "color": "FFFFFF",
       "file_indicators": ["k8s", "kubernetes", "*deployment*.yaml", "*service*.yaml", "*ingress*.yaml"]
     }
-  ]
-}
+  ]}

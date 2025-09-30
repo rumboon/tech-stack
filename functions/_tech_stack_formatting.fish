@@ -29,7 +29,7 @@ function _format_technology --description 'Format a single technology with color
     # Build the complete display string
     set -l display_text $id
     if test -n "$tech_version"
-        set display_text "[$id v$tech_version]"
+        set display_text "$id $tech_version"
     end
 
     # Apply color formatting to the complete string
@@ -60,16 +60,17 @@ function _tech_stack_formatting --description 'Format detection results into col
         set -l parts (string split "|" $result)
         set -l tech_name $parts[1]
         set -l icon $parts[2]
-        set -l color $parts[3]
-        set -l bg_color $parts[4]
-        set -l tech_version $parts[5]
+        set -l label $parts[3]
+        set -l color $parts[4]
+        set -l bg_color $parts[5]
+        set -l tech_version $parts[6]
 
-        if test $first_item != "true"
-            set formatted_output "$formatted_output "
+        if test $first_item != true
+            set formatted_output "$formatted_output, "
         end
         set first_item false
 
-        set -l formatted_tech (_format_technology $icon $color $bg_color $tech_version)
+        set -l formatted_tech (_format_technology $label $color $bg_color $tech_version)
         set formatted_output "$formatted_output$formatted_tech"
     end
 
@@ -78,6 +79,5 @@ function _tech_stack_formatting --description 'Format detection results into col
         set formatted_output "$formatted_output…"
     end
 
-    echo $formatted_output
+    echo "$formatted_output"
 end
-

@@ -40,7 +40,6 @@ end
 
 function _tech_stack_detection --description 'Detect technologies from rules file'
     set -l rules_file $argv[1]
-    set -l include_versions $argv[2] # "true" for languages, "false" for tech
 
     set -l results
 
@@ -49,26 +48,21 @@ function _tech_stack_detection --description 'Detect technologies from rules fil
     end
 
     # Parse all rules at once to avoid repeated jq calls
-    set -l rules_data (jq -r '.rules[] | "\(.name)|\(.icon)|\(.color // "white")|\(.bg_color // "black")|\(.file_indicators | join(","))"' $rules_file)
+    set -l rules_data (jq -r '.rules[] | "\(.id)|\(.icon)|\(.label)|\(.color // "white")|\(.bg_color // "black")|\(.file_indicators | join(","))"' $rules_file)
     for rule_line in $rules_data
         set -l parts (string split "|" $rule_line)
         set -l name $parts[1]
         set -l icon $parts[2]
-        set -l color $parts[3]
-        set -l bg_color $parts[4]
-        set -l file_indicators (string split "," $parts[5])
+        set -l label $parts[3]
+        set -l color $parts[4]
+        set -l bg_color $parts[5]
+        set -l file_indicators (string split "," $parts[6])
 
         if _check_file_indicators $file_indicators
             if _apply_special_rules $name "true"
-                # Handle version detection for languages
-                if test "$include_versions" = "true"
-                    set -l lang_version (_tech_stack_version $name)
-                    # Store the version info separately, formatting will handle display
-                    set -a results "$name|$icon|$color|$bg_color|$lang_version"
-                else
-                    # Tech stacks don't have versions
-                    set -a results "$name|$icon|$color|$bg_color|"
-                end
+                # Get version for both languages and mods
+                set -l tech_version (_tech_stack_version $name)
+                set -a results "$name|$icon|$label|$color|$bg_color|$tech_version"
             end
         end
     end
