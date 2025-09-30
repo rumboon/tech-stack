@@ -5,8 +5,10 @@ source (dirname (status filename))/_tech_stack_detection.fish
 source (dirname (status filename))/_tech_stack_formatting.fish
 source (dirname (status filename))/_tech_stack_version.fish
 
-function _tech_stack_worker --description 'Modern modular technology detection worker'
-    set -l tech_var_name $argv[1]
+
+function _tech_stack_worker --description 'Technology detection worker that outputs separate language and tech variables'
+    set -l langs_var_name $argv[1]
+    set -l mods_var_name $argv[2]
     set -l work_dir $PWD
 
     # Configuration
@@ -35,26 +37,18 @@ function _tech_stack_worker --description 'Modern modular technology detection w
         set tech_results (_tech_stack_detection $tech_rules_json "false")
     end
 
-    # Format output
-    set -l formatted_output ""
-
-    # Format languages
+    # Format and set separate variables
     if test (count $language_results) -gt 0
         set -l lang_formatted (_tech_stack_formatting $language_results $max_tech_display)
-        set formatted_output "$formatted_output$lang_formatted"
+        set --universal -- $langs_var_name $lang_formatted
+    else
+        set --universal -- $langs_var_name ""
     end
 
-    # Add separator if we have both
-    if test (count $language_results) -gt 0 -a (count $tech_results) -gt 0
-        set formatted_output "$formatted_output • "
-    end
-
-    # Format tech stacks
     if test (count $tech_results) -gt 0
         set -l tech_formatted (_tech_stack_formatting $tech_results $max_tech_display)
-        set formatted_output "$formatted_output$tech_formatted"
+        set --universal -- $mods_var_name $tech_formatted
+    else
+        set --universal -- $mods_var_name ""
     end
-
-    # Set the universal variable
-    set --universal $tech_var_name $formatted_output
 end

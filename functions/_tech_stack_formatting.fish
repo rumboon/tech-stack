@@ -81,3 +81,4 @@ function _tech_stack_formatting --description 'Format detection results into col
 
     echo $formatted_output
 end
+

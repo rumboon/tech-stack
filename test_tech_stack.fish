@@ -72,9 +72,22 @@ function cleanup_test_directory
 end
 
 function run_tech_stack
-    set -l var_name "test_tech_result"
-    _tech_stack_worker $var_name
-    echo $$var_name
+    set -l langs_var "test_tech_langs"
+    set -l mods_var "test_tech_mods"
+    _tech_stack_worker $langs_var $mods_var
+    # Combine the results for backward compatibility with tests
+    set -l combined ""
+    if test -n "$$langs_var"
+        set combined "$$langs_var"
+    end
+    if test -n "$$mods_var"
+        if test -n "$combined"
+            set combined "$combined • $$mods_var"
+        else
+            set combined "$$mods_var"
+        end
+    end
+    echo $combined
 end
 
 # Fast single-rule detection for testing
