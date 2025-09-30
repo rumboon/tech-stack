@@ -21,22 +21,20 @@ function _deduplicate_results --description 'Remove duplicate technologies while
 end
 
 function _format_technology --description 'Format a single technology with colors'
-    set -l tech_name $argv[1]
-    set -l icon $argv[2]
-    set -l color $argv[3]
-    set -l bg_color $argv[4]
+    set -l id $argv[1]
+    set -l color $argv[2]
+    set -l bg_color $argv[3]
+    set -l tech_version $argv[4]
 
-    # Apply color formatting using Fish's set_color with background and foreground
-    set -l colored_icon (set_color --background $bg_color $color)"$icon"(set_color normal)
-
-    # Check if tech has version info (for languages)
-    if string match -q "*_*" $tech_name
-        set -l parts (string split "_" $tech_name)
-        set -l colored_version (set_color --background $bg_color $color)"$parts[2]"(set_color normal)
-        echo "$colored_icon$colored_version"
-    else
-        echo "$colored_icon"
+    # Build the complete display string
+    set -l display_text $id
+    if test -n "$tech_version"
+        set display_text "[$id v$tech_version]"
     end
+
+    # Apply color formatting to the complete string
+    set -l colored_tech (set_color --background $bg_color $color)"$display_text"(set_color normal)
+    echo "$colored_tech"
 end
 
 function _tech_stack_formatting --description 'Format detection results into colored output'
@@ -64,13 +62,14 @@ function _tech_stack_formatting --description 'Format detection results into col
         set -l icon $parts[2]
         set -l color $parts[3]
         set -l bg_color $parts[4]
+        set -l tech_version $parts[5]
 
         if test $first_item != "true"
             set formatted_output "$formatted_output "
         end
         set first_item false
 
-        set -l formatted_tech (_format_technology $tech_name $icon $color $bg_color)
+        set -l formatted_tech (_format_technology $icon $color $bg_color $tech_version)
         set formatted_output "$formatted_output$formatted_tech"
     end
 

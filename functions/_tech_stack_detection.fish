@@ -63,20 +63,11 @@ function _tech_stack_detection --description 'Detect technologies from rules fil
                 # Handle version detection for languages
                 if test "$include_versions" = "true"
                     set -l lang_version (_tech_stack_version $name)
-                    set -l tech_name
-                    set -l icon_with_bracket
-
-                    if test -n "$lang_version"
-                        set tech_name "$name"_"v$lang_version]"
-                        set icon_with_bracket "[$icon "
-                    else
-                        set tech_name "$name"_"?]"
-                        set icon_with_bracket "[$icon "
-                    end
-                    set -a results "$tech_name|$icon_with_bracket|$color|$bg_color"
+                    # Store the version info separately, formatting will handle display
+                    set -a results "$name|$icon|$color|$bg_color|$lang_version"
                 else
                     # Tech stacks don't have versions
-                    set -a results "$name|$icon|$color|$bg_color"
+                    set -a results "$name|$icon|$color|$bg_color|"
                 end
             end
         end
