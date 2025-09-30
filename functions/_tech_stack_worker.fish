@@ -19,22 +19,22 @@ function _tech_stack_worker --description 'Technology detection worker that outp
         set max_tech_display $tech_display_limit
     end
 
-    set -l tech_rules_json "$TECH_STACK_CONFIG_DIR/_tech_stack_rules.json"
-    set -l language_rules_json "$TECH_STACK_CONFIG_DIR/_tech_stack_language_rules.json"
+    set -l rules_mods_json "$TECH_STACK_CONFIG_DIR/_tech_stack_rules_mods.json"
+    set -l rules_languages_json "$TECH_STACK_CONFIG_DIR/_tech_stack_rules_languages.json"
 
     # Change to working directory for file tests
     cd $work_dir
 
     # Detect languages (with versions)
     set -l language_results
-    if test -f $language_rules_json
-        set language_results (_tech_stack_detection $language_rules_json "true")
+    if test -f $rules_languages_json
+        set language_results (_tech_stack_detection $rules_languages_json "true")
     end
 
     # Detect tech stacks (without versions)
     set -l tech_results
-    if test -f $tech_rules_json
-        set tech_results (_tech_stack_detection $tech_rules_json "false")
+    if test -f $rules_mods_json
+        set tech_results (_tech_stack_detection $rules_mods_json "false")
     end
 
     # Format and set separate variables

@@ -164,7 +164,7 @@ echo
 
 # Test 2: Dynamic language detection tests (batch mode)
 echo "🔬 Testing all languages from configuration..."
-set -l language_rules_file "$project_root/functions/_tech_stack_language_rules.json"
+set -l language_rules_file "$project_root/functions/_tech_stack_rules_languages.json"
 if test -f $language_rules_file; and command -v jq >/dev/null 2>&1
     set -l batch_test_dir "/tmp/tech_test_batch_lang"
     create_test_directory $batch_test_dir
@@ -216,7 +216,7 @@ echo
 
 # Test 3: Dynamic tech stack detection tests (batch mode)
 echo "⚙️ Testing all tech stacks from configuration..."
-set -l tech_rules_file "$project_root/functions/_tech_stack_rules.json"
+set -l tech_rules_file "$project_root/functions/_tech_stack_rules_mods.json"
 if test -f $tech_rules_file; and command -v jq >/dev/null 2>&1
     set -l batch_test_dir "/tmp/tech_test_batch_tech"
     create_test_directory $batch_test_dir
@@ -292,24 +292,24 @@ echo
 
 # Test 6: JSON configuration validation
 echo "📄 Testing JSON configuration files..."
-set -l tech_rules_file "$project_root/functions/_tech_stack_rules.json"
-set -l lang_rules_file "$project_root/functions/_tech_stack_language_rules.json"
+set -l tech_rules_file "$project_root/functions/_tech_stack_rules_mods.json"
+set -l lang_rules_file "$project_root/functions/_tech_stack_rules_languages.json"
 
-test_assert "_tech_stack_rules.json should exist" "true" (test -f $tech_rules_file; and echo true; or echo false)
-test_assert "_tech_stack_language_rules.json should exist" "true" (test -f $lang_rules_file; and echo true; or echo false)
+test_assert "_tech_stack_rules_mods.json should exist" "true" (test -f $tech_rules_file; and echo true; or echo false)
+test_assert "_tech_stack_rules_languages.json should exist" "true" (test -f $lang_rules_file; and echo true; or echo false)
 
 # Validate JSON syntax
 if command -v jq >/dev/null 2>&1
     set -l tech_json_valid (jq empty $tech_rules_file 2>/dev/null; and echo true; or echo false)
     set -l lang_json_valid (jq empty $lang_rules_file 2>/dev/null; and echo true; or echo false)
-    test_assert "_tech_stack_rules.json should be valid JSON" "true" "$tech_json_valid"
-    test_assert "_tech_stack_language_rules.json should be valid JSON" "true" "$lang_json_valid"
+    test_assert "_tech_stack_rules_mods.json should be valid JSON" "true" "$tech_json_valid"
+    test_assert "_tech_stack_rules_languages.json should be valid JSON" "true" "$lang_json_valid"
 
     # Test that required fields exist
     set -l tech_rules_count (jq '.rules | length' $tech_rules_file)
     set -l lang_rules_count (jq '.rules | length' $lang_rules_file)
-    test_assert "_tech_stack_rules.json should contain rules" "true" (test $tech_rules_count -gt 0; and echo true; or echo false)
-    test_assert "_tech_stack_language_rules.json should contain rules" "true" (test $lang_rules_count -gt 0; and echo true; or echo false)
+    test_assert "_tech_stack_rules_mods.json should contain rules" "true" (test $tech_rules_count -gt 0; and echo true; or echo false)
+    test_assert "_tech_stack_rules_languages.json should contain rules" "true" (test $lang_rules_count -gt 0; and echo true; or echo false)
 else
     echo "⚠️  Skipping JSON validation - jq not available"
 end
