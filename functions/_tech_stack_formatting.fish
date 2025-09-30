@@ -21,19 +21,59 @@ function _deduplicate_results --description 'Remove duplicate technologies while
 end
 
 function _format_technology --description 'Format a single technology with colors'
-    set -l id $argv[1]
-    set -l color $argv[2]
-    set -l bg_color $argv[3]
-    set -l tech_version $argv[4]
+    set -l icon $argv[1]
+    set -l label $argv[2]
+    set -l color $argv[3]
+    set -l bg_color $argv[4]
+    set -l tech_version $argv[5]
 
-    # Build the complete display string
-    set -l display_text $id
-    if test -n "$tech_version"
-        set display_text "$id $tech_version"
+    # Determine display format
+    set -l display_format "label"
+    if set -q TECH_STACK_DISPLAY_FORMAT
+        set display_format $TECH_STACK_DISPLAY_FORMAT
     end
 
-    # Apply color formatting to the complete string
-    set -l colored_tech (set_color --background $bg_color $color)"$display_text"(set_color normal)
+    # Build the display text based on format
+    set -l display_text
+    switch $display_format
+        case "icon_label"
+            set display_text "$icon $label"
+        case "icon"
+            set display_text "$icon"
+        case "label"
+            set display_text "$label"
+        case "*"
+            set display_text "$label"  # Default fallback
+    end
+
+    # Add version if available and enabled
+    if test -n "$tech_version"; and test "$TECH_STACK_SHOW_VERSION" = "true"
+        set display_text "$display_text $tech_version"
+    end
+
+    # Determine color mode
+    set -l color_mode "full"
+    if set -q TECH_STACK_COLOR_MODE
+        set color_mode $TECH_STACK_COLOR_MODE
+    end
+
+    # Apply color formatting based on mode
+    set -l colored_tech
+    switch $color_mode
+        case "full"
+            # Background + foreground color
+            set colored_tech (set_color --background $bg_color $color)"$display_text"(set_color normal)
+        case "foreground"
+            # Only foreground color, no background
+            set colored_tech (set_color $color)"$display_text"(set_color normal)
+        case "none"
+            # No colors, plain text
+            set colored_tech "$display_text"
+        case "*"
+            # Default fallback to full color
+            set colored_tech (set_color --background $bg_color $color)"$display_text"(set_color normal)
+    end
+
     echo "$colored_tech"
 end
 
@@ -70,7 +110,7 @@ function _tech_stack_formatting --description 'Format detection results into col
         end
         set first_item false
 
-        set -l formatted_tech (_format_technology $label $color $bg_color $tech_version)
+        set -l formatted_tech (_format_technology $icon $label $color $bg_color $tech_version)
         set formatted_output "$formatted_output$formatted_tech"
     end
 

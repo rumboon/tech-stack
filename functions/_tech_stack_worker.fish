@@ -13,7 +13,9 @@ function _tech_stack_worker --description 'Technology detection worker that outp
 
     # Configuration
     set -l max_tech_display 24
-    if set -q TECH_DISPLAY_LIMIT
+    if set -q TECH_STACK_DISPLAY_LIMIT
+        set max_tech_display $TECH_STACK_DISPLAY_LIMIT
+    else if set -q TECH_DISPLAY_LIMIT
         set max_tech_display $TECH_DISPLAY_LIMIT
     else if set -q tech_display_limit
         set max_tech_display $tech_display_limit
