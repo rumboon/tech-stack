@@ -177,7 +177,7 @@ function _tech_stack_version --description 'Get version for supported languages'
             end
         case "fish"
             if command -v fish >/dev/null 2>&1
-                fish --version 2>/dev/null | awk '{print $3}'
+                fish --private --version 2>/dev/null | awk '{print $3}'
             end
     end
 end
