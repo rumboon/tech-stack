@@ -20,7 +20,7 @@ function _tech_stack_async --description 'Asynchronously detect technologies and
 
     # Start async tech detection using worker function (works in any directory)
     set -l worker_path (dirname (status --current-filename))/_tech_stack_worker.fish
-    fish --private -c "set -gx TECH_STACK_CONFIG_DIR $TECH_STACK_CONFIG_DIR; source $worker_path; _tech_stack_worker $_tech_stack_langs $_tech_stack_mods" &
+    fish --private -c "set -gx TECH_STACK_CONFIG_DIR $TECH_STACK_CONFIG_DIR; source $worker_path; _tech_stack_worker $_tech_stack_langs $_tech_stack_mods" & disown
 
     set -g _tech_last_pid $last_pid
 end

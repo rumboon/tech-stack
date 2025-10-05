@@ -14,12 +14,24 @@ end
 function _tech_stack_version --description 'Get version for supported languages'
     set -l language $argv[1]
 
-    switch $language
-        case "Node.js"
-            if command -v node >/dev/null 2>&1
-                node -v 2>/dev/null | sed 's/v//'
-            end
-        case "Python"
+    # Sanitize language name for use as variable name (remove dots, spaces, etc.)
+    set -l sanitized_name (string replace -a '.' '_' -- $language | string replace -a ' ' '_')
+
+    # Check cache first (session-level cache)
+    set -l cache_var "_tech_version_cache_$sanitized_name"
+    if set -q $cache_var
+        echo $$cache_var
+        return
+    end
+
+    # Get version (captured from switch output)
+    set -l tech_ver (begin
+        switch $language
+            case "Node.js"
+                if command -v node >/dev/null 2>&1
+                    node -v 2>/dev/null | sed 's/v//'
+                end
+            case "Python"
             if command -v python3 >/dev/null 2>&1
                 python3 --version 2>/dev/null | awk '{print $2}'
             else if command -v python >/dev/null 2>&1
@@ -179,5 +191,12 @@ function _tech_stack_version --description 'Get version for supported languages'
             if command -v fish >/dev/null 2>&1
                 fish --private --version 2>/dev/null | awk '{print $3}'
             end
+        end
+    end)
+
+    # Cache the result and return it
+    if test -n "$tech_ver"
+        set -g $cache_var $tech_ver
+        echo $tech_ver
     end
 end
