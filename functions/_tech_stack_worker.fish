@@ -7,7 +7,7 @@ source (dirname (status filename))/_tech_stack_version.fish
 
 
 function _get_cache_key --description 'Generate cache key from directory'
-    string replace -a '/' '_' -- $PWD | string replace -a '.' '_'    
+    string replace -a '/' '_' -- $PWD | string replace -a '.' '_' | string replace -a '-' '_'
 end
 
 function _get_indicator_files_mtime --description 'Get modification times of indicator files'

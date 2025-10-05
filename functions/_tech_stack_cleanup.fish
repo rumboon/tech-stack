@@ -1,6 +1,6 @@
 function _tech_stack_cleanup --description 'Clean up tech stack processes and variables'
     command kill $_tech_last_pid 2>/dev/null
-    set --erase $_tech_info_git
+    set --erase _tech_info_git
 end
 
 # Set up event handlers for cleanup
