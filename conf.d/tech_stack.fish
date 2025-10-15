@@ -7,9 +7,6 @@ if not set -q TECH_STACK_CONFIG_DIR
     set -gx TECH_STACK_CONFIG_DIR $__fish_config_dir/functions
 end
 
-# Initialize tech stack variables
-set -g _tech_stack_initialized false
-
 # Display format configuration
 # Options:
 #   "icon_label" - Show both icon and label (e.g., "⬡ Node")
@@ -36,6 +33,46 @@ if not set -q TECH_STACK_SHOW_VERSION
     set -gx TECH_STACK_SHOW_VERSION true
 end
 
+# Language version display configuration (overrides TECH_STACK_SHOW_VERSION for languages)
+# Options:
+#   true         - Show version information for languages
+#   false        - Hide version information for languages
+#   (unset)      - Use TECH_STACK_SHOW_VERSION value
+if not set -q TECH_STACK_SHOW_VERSION_LANGS
+    # Default: use global setting
+end
+
+# Mods/tools version display configuration (overrides TECH_STACK_SHOW_VERSION for mods)
+# Options:
+#   true         - Show version information for mods/tools
+#   false        - Hide version information for mods/tools
+#   (unset)      - Use TECH_STACK_SHOW_VERSION value
+if not set -q TECH_STACK_SHOW_VERSION_MODS
+    # Default: use global setting
+end
+
+# Language color configuration (overrides TECH_STACK_COLOR_MODE for languages)
+# Options:
+#   "full"       - Show background color + foreground color
+#   "foreground" - Show only foreground color, no background
+#   "none"       - Show no colors (plain text)
+#   set_color arguments - Custom color arguments (e.g., "green --dim", "blue --bold")
+#   (unset)      - Use TECH_STACK_COLOR_MODE value
+if not set -q TECH_STACK_COLOR_LANGS
+    # Default: use global setting
+end
+
+# Mods/tools color configuration (overrides TECH_STACK_COLOR_MODE for mods)
+# Options:
+#   "full"       - Show background color + foreground color
+#   "foreground" - Show only foreground color, no background
+#   "none"       - Show no colors (plain text)
+#   set_color arguments - Custom color arguments (e.g., "green --dim", "blue --bold")
+#   (unset)      - Use TECH_STACK_COLOR_MODE value
+if not set -q TECH_STACK_COLOR_MODS
+    # Default: use global setting
+end
+
 # Fisher event handlers
 function __tech_stack_install --on-event tech_stack_install
     echo "Tech Stack plugin installed successfully!"
@@ -51,7 +88,6 @@ end
 function __tech_stack_uninstall --on-event tech_stack_uninstall
     echo "Cleaning up Tech Stack plugin..."
     # Clean up any persistent variables
-    set --erase _tech_stack_initialized
     set --erase TECH_STACK_CONFIG_DIR
     echo "Tech Stack plugin uninstalled."
 end

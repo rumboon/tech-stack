@@ -1,6 +1,12 @@
 function _tech_stack_cleanup --description 'Clean up tech stack processes and variables'
     command kill $_tech_last_pid 2>/dev/null
-    set --erase _tech_info_git
+    # Erase the universal variables by dereferencing the variable names
+    if set -q _tech_stack_langs
+        set --erase --universal $_tech_stack_langs
+    end
+    if set -q _tech_stack_mods
+        set --erase --universal $_tech_stack_mods
+    end
 end
 
 # Set up event handlers for cleanup

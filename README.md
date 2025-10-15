@@ -39,6 +39,17 @@ echo $_tech_info_git
 
 ## Configuration
 
+### Color Coordination
+
+Tech Stack automatically coordinates colors with `stacked-prompt` if installed. When `STACKED_PROMPT_COLOR_SCHEME` is set, tech info colors match the prompt theme.
+
+For standalone use or custom colors:
+- `TECH_STACK_COLOR_LANGS` - Color for languages (e.g., "green --dim")
+- `TECH_STACK_COLOR_MODS` - Color for mods/frameworks
+- `TECH_STACK_COLOR_MODE` - Color mode: "full", "foreground", or "none"
+
+### Detection Rules
+
 Technology detection rules are defined in JSON files:
 - `functions/_tech_stack_language_rules.json` - Language detection rules (with version support)
 - `functions/_tech_stack_rules.json` - Tech stack/framework detection rules

@@ -30,6 +30,9 @@ function _tech_stack_worker --description 'Technology detection worker that outp
     set -l mods_var_name $argv[2]
     set -l work_dir $PWD
 
+    # Guard against empty variable names
+    test -z "$langs_var_name" -o -z "$mods_var_name"; and return
+
     # Configuration
     set -l max_tech_display 24
     if set -q TECH_STACK_DISPLAY_LIMIT
@@ -88,14 +91,14 @@ function _tech_stack_worker --description 'Technology detection worker that outp
     set -l tech_formatted ""
 
     if test (count $language_results) -gt 0
-        set lang_formatted (_tech_stack_formatting $language_results $max_tech_display)
+        set lang_formatted (_tech_stack_formatting "langs" $language_results $max_tech_display)
         set --universal -- $langs_var_name $lang_formatted
     else
         set --universal -- $langs_var_name ""
     end
 
     if test (count $tech_results) -gt 0
-        set tech_formatted (_tech_stack_formatting $tech_results $max_tech_display)
+        set tech_formatted (_tech_stack_formatting "mods" $tech_results $max_tech_display)
         set --universal -- $mods_var_name $tech_formatted
     else
         set --universal -- $mods_var_name ""

@@ -7,11 +7,11 @@ function _tech_stack_async --description 'Asynchronously detect technologies and
 
         # Set up variable watchers for tech info updates
         function $_tech_stack_langs --on-variable $_tech_stack_langs
-            commandline --function repaint
+            commandline -f repaint 2>/dev/null
         end
 
         function $_tech_stack_mods --on-variable $_tech_stack_mods
-            commandline --function repaint
+            commandline -f repaint 2>/dev/null
         end
     end
 
