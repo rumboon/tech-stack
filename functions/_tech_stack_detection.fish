@@ -6,8 +6,8 @@ function _check_file_indicators --description 'Check if file indicators exist'
     for indicator in $file_indicators
         # Handle glob patterns (containing asterisks)
         if string match -q "*\**" $indicator
-            # Use find for reliable glob pattern matching and check if it actually found files
-            set -l found_files (find . -name "$indicator" -type f -print -quit 2>/dev/null)
+            # Only search in current directory (maxdepth 1) to avoid slow recursive searches
+            set -l found_files (find . -maxdepth 1 -name "$indicator" -type f -print -quit 2>/dev/null)
             if test -n "$found_files"
                 return 0
             end
