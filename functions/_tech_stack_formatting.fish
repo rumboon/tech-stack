@@ -60,36 +60,25 @@ function _format_technology --description 'Format a single technology with color
         set display_text "$display_text $tech_version"
     end
 
-    # Determine color mode based on stacked-prompt scheme first, then category-specific or global setting
-    set -l color_config
-    if set -q STACKED_PROMPT_COLOR_SCHEME
-        # Coordinate with stacked-prompt color scheme
-        switch $STACKED_PROMPT_COLOR_SCHEME
-            case default
-                set color_config green --dim
-            case minimal
-                set color_config brblack
-            case vibrant
-                set color_config brcyan
-            case ocean
-                set color_config blue --dim
-            case gruvbox
-                set color_config blue --dim
-            case nord
-                set color_config 5E81AC --dim # Nord9
-            case custom
-                # Fall through to tech-stack config
-                if test "$category" = "langs"; and set -q TECH_STACK_COLOR_LANGS
-                    set color_config $TECH_STACK_COLOR_LANGS
-                else if test "$category" = "mods"; and set -q TECH_STACK_COLOR_MODS
-                    set color_config $TECH_STACK_COLOR_MODS
-                else
-                    set color_config green --dim
-                end
-            case '*'
-                set color_config green --dim
+    if test "$category" = "langs"; and set -q STACKED_THEME_COLOR_TECH_LANGS
+        set -l normal_color (set_color normal)
+        if set -q STACKED_THEME_COLOR_NORMAL
+            set normal_color $STACKED_THEME_COLOR_NORMAL
         end
-    else if test "$category" = "langs"; and set -q TECH_STACK_COLOR_LANGS
+        echo "$STACKED_THEME_COLOR_TECH_LANGS$display_text$normal_color"
+        return
+    else if test "$category" = "mods"; and set -q STACKED_THEME_COLOR_TECH_MODS
+        set -l normal_color (set_color normal)
+        if set -q STACKED_THEME_COLOR_NORMAL
+            set normal_color $STACKED_THEME_COLOR_NORMAL
+        end
+        echo "$STACKED_THEME_COLOR_TECH_MODS$display_text$normal_color"
+        return
+    end
+
+    # Determine color mode based on explicit tech-stack configuration
+    set -l color_config
+    if test "$category" = "langs"; and set -q TECH_STACK_COLOR_LANGS
         set color_config $TECH_STACK_COLOR_LANGS
     else if test "$category" = "mods"; and set -q TECH_STACK_COLOR_MODS
         set color_config $TECH_STACK_COLOR_MODS

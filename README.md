@@ -19,13 +19,15 @@ fisher install rumboon/tech-stack
 
 ## Usage
 
-The tech stack detection runs automatically when used by a compatible prompt. The detected information is stored in the `$_tech_info_git` variable.
+The tech stack detection runs automatically when used by a compatible prompt. Asynchronous results are written to per-session variables whose names are exported via `_tech_stack_langs` (languages) and `_tech_stack_mods` (tools/frameworks).
 
 Manual usage:
 ```fish
 _tech_stack_async
-# Check the result
-echo $_tech_info_git
+set -l langs_var $_tech_stack_langs
+set -l mods_var $_tech_stack_mods
+printf "Langs: %s\n" $$langs_var
+printf "Mods:  %s\n" $$mods_var
 ```
 
 ## Functions
@@ -41,9 +43,9 @@ echo $_tech_info_git
 
 ### Color Coordination
 
-Tech Stack automatically coordinates colors with `stacked-prompt` if installed. When `STACKED_PROMPT_COLOR_SCHEME` is set, tech info colors match the prompt theme.
+Tech Stack reads the exported tokens from `stacked-theme` when available (`STACKED_THEME_COLOR_TECH_LANGS`, `STACKED_THEME_COLOR_TECH_MODS`, `STACKED_THEME_COLOR_NORMAL`) so async workers stay in sync with the active prompt palette. If the theme module is not installed, the plugin falls back to the configuration variables below.
 
-For standalone use or custom colors:
+For standalone use or explicit overrides:
 - `TECH_STACK_COLOR_LANGS` - Color for languages (e.g., "green --dim")
 - `TECH_STACK_COLOR_MODS` - Color for mods/frameworks
 - `TECH_STACK_COLOR_MODE` - Color mode: "full", "foreground", or "none"
@@ -51,8 +53,8 @@ For standalone use or custom colors:
 ### Detection Rules
 
 Technology detection rules are defined in JSON files:
-- `functions/_tech_stack_language_rules.json` - Language detection rules (with version support)
-- `functions/_tech_stack_rules.json` - Tech stack/framework detection rules
+- `functions/_tech_stack_rules_languages.json` - Language detection rules (with version support)
+- `functions/_tech_stack_rules_mods.json` - Tech stack/framework detection rules
 
 ## Testing
 
@@ -65,4 +67,3 @@ The test suite includes:
 - Dynamic testing of all configured languages and tech stacks
 - Multi-technology detection validation
 - JSON configuration validation
-- Automatic testing via GitHub Actions CI

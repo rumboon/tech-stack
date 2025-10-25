@@ -5,9 +5,8 @@ source (dirname (status filename))/_tech_stack_detection.fish
 source (dirname (status filename))/_tech_stack_formatting.fish
 source (dirname (status filename))/_tech_stack_version.fish
 
-
 function _get_cache_key --description 'Generate cache key from directory'
-    string replace -a '/' '_' -- $PWD | string replace -a '.' '_' | string replace -a '-' '_'
+    string escape --style=var -- $PWD
 end
 
 function _get_indicator_files_mtime --description 'Get modification times of indicator files'
@@ -47,7 +46,7 @@ function _tech_stack_worker --description 'Technology detection worker that outp
     set -l rules_languages_json "$TECH_STACK_CONFIG_DIR/_tech_stack_rules_languages.json"
 
     # Change to working directory for file tests
-    cd $work_dir
+    cd $work_dir; or return 1
 
     # Check cache
     set -l cache_key (_get_cache_key)
