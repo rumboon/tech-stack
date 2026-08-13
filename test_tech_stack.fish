@@ -7,6 +7,16 @@ set -g test_count 0
 set -g pass_count 0
 set -g fail_count 0
 
+# Test the repository's worker, not whatever version is installed; the worker
+# needs the stacked-core helpers, sourced from the sibling module when present
+set -l __test_root (dirname (realpath (status --current-filename)))
+for f in _stacked_color _stacked_read _stacked_publish
+    if not functions -q $f; and test -r $__test_root/../stacked-core/functions/$f.fish
+        source $__test_root/../stacked-core/functions/$f.fish
+    end
+end
+source $__test_root/functions/_tech_stack_worker.fish
+
 function test_assert
     set -g test_count (math $test_count + 1)
     set -l description $argv[1]
@@ -72,19 +82,24 @@ function cleanup_test_directory
 end
 
 function run_tech_stack
-    set -l langs_var "test_tech_langs"
-    set -l mods_var "test_tech_mods"
-    _tech_stack_worker $langs_var $mods_var
+    # Flat temp paths keep the worker's runtime cache disabled ("/cache" is
+    # not writable), so every call runs real detection
+    set -l langs_file (mktemp)
+    set -l mods_file (mktemp)
+    _tech_stack_worker $langs_file $mods_file
+    set -l langs (cat $langs_file 2>/dev/null)
+    set -l mods (cat $mods_file 2>/dev/null)
+    rm -f $langs_file $mods_file
     # Combine the results for backward compatibility with tests
     set -l combined ""
-    if test -n "$$langs_var"
-        set combined "$$langs_var"
+    if test -n "$langs"
+        set combined "$langs"
     end
-    if test -n "$$mods_var"
+    if test -n "$mods"
         if test -n "$combined"
-            set combined "$combined • $$mods_var"
+            set combined "$combined • $mods"
         else
-            set combined "$$mods_var"
+            set combined "$mods"
         end
     end
     echo $combined

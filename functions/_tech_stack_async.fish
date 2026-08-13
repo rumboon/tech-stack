@@ -7,7 +7,8 @@ function _tech_stack_async --description 'Asynchronously detect technologies and
         return 1
     end
 
-    # The worker is sourced by path so it runs in any directory
+    # Workers run without config, so the worker file is sourced by path and
+    # the rules location is passed along explicitly
     set -l worker_path (dirname (status --current-filename))/_tech_stack_worker.fish
     set -l config_dir ""
     if set -q TECH_STACK_CONFIG_DIR

@@ -5,10 +5,6 @@ source (dirname (status filename))/_tech_stack_detection.fish
 source (dirname (status filename))/_tech_stack_formatting.fish
 source (dirname (status filename))/_tech_stack_version.fish
 
-function _get_cache_key --description 'Generate cache key from directory'
-    string escape --style=var -- $PWD
-end
-
 function _get_indicator_files_mtime --description 'Get modification times of indicator files'
     # Common files that indicate tech stack changes
     set -l indicator_files package.json Cargo.toml go.mod requirements.txt Gemfile composer.json pom.xml build.gradle pyproject.toml
@@ -24,13 +20,20 @@ function _get_indicator_files_mtime --description 'Get modification times of ind
     echo $mtime_hash
 end
 
-function _tech_stack_worker --description 'Technology detection worker that outputs separate language and tech variables'
-    set -l langs_var_name $argv[1]
-    set -l mods_var_name $argv[2]
+function __tech_stack_cache_store --description 'Atomically write one cache file'
+    set -l file $argv[1]
+    set -l value (string join ' ' -- $argv[2..-1])
+    printf '%s\n' $value >$file.tmp$fish_pid 2>/dev/null
+    and mv -f $file.tmp$fish_pid $file 2>/dev/null
+end
+
+function _tech_stack_worker --description 'Technology detection worker that publishes language and tech results'
+    set -l langs_file $argv[1]
+    set -l mods_file $argv[2]
     set -l work_dir $PWD
 
-    # Guard against empty variable names
-    test -z "$langs_var_name" -o -z "$mods_var_name"; and return
+    # Guard against missing result file paths
+    test -z "$langs_file" -o -z "$mods_file"; and return
 
     # Configuration
     set -l max_tech_display 24
@@ -48,27 +51,19 @@ function _tech_stack_worker --description 'Technology detection worker that outp
     # Change to working directory for file tests
     cd $work_dir; or return 1
 
-    # Check cache
-    set -l cache_key (_get_cache_key)
+    # Detection results are cached per directory in the shared runtime cache.
+    # The theme is part of the key because results embed color escapes.
+    set -l cache_root (dirname (dirname $langs_file))/cache
+    mkdir -p $cache_root 2>/dev/null
+    set -l theme none
+    set -q STACKED_THEME_ACTIVE; and set theme $STACKED_THEME_ACTIVE
+    set -l cache_base $cache_root/(string escape --style=var -- "$work_dir|$theme")
     set -l current_mtime (_get_indicator_files_mtime)
-    set -l cache_mtime_var "_tech_cache_mtime_$cache_key"
-    set -l cache_langs_var "_tech_cache_langs_$cache_key"
-    set -l cache_mods_var "_tech_cache_mods_$cache_key"
 
-    # Use cache if valid
-    if set -q $cache_mtime_var; and test "$$cache_mtime_var" = "$current_mtime"
-        # Cache is valid, use cached results
-        if set -q $cache_langs_var
-            set --universal -- $langs_var_name $$cache_langs_var
-        else
-            set --universal -- $langs_var_name ""
-        end
-
-        if set -q $cache_mods_var
-            set --universal -- $mods_var_name $$cache_mods_var
-        else
-            set --universal -- $mods_var_name ""
-        end
+    set -l cached_mtime (_stacked_read $cache_base.mtime)
+    if test "$cached_mtime" = "$current_mtime" -a -r "$cache_base.langs" -a -r "$cache_base.mods"
+        _stacked_publish $langs_file (_stacked_read $cache_base.langs)
+        _stacked_publish $mods_file (_stacked_read $cache_base.mods)
         return
     end
 
@@ -85,26 +80,22 @@ function _tech_stack_worker --description 'Technology detection worker that outp
         set tech_results (_tech_stack_detection $rules_mods_json)
     end
 
-    # Format and set separate variables
+    # Format and publish the results
     set -l lang_formatted ""
     set -l tech_formatted ""
 
     if test (count $language_results) -gt 0
-        set lang_formatted (_tech_stack_formatting "langs" $language_results $max_tech_display)
-        set --universal -- $langs_var_name $lang_formatted
-    else
-        set --universal -- $langs_var_name ""
+        set lang_formatted (_tech_stack_formatting langs $language_results $max_tech_display)
     end
-
     if test (count $tech_results) -gt 0
-        set tech_formatted (_tech_stack_formatting "mods" $tech_results $max_tech_display)
-        set --universal -- $mods_var_name $tech_formatted
-    else
-        set --universal -- $mods_var_name ""
+        set tech_formatted (_tech_stack_formatting mods $tech_results $max_tech_display)
     end
 
-    # Update cache (global vars for caching within session)
-    set -g $cache_mtime_var $current_mtime
-    set -g $cache_langs_var $lang_formatted
-    set -g $cache_mods_var $tech_formatted
+    _stacked_publish $langs_file $lang_formatted
+    _stacked_publish $mods_file $tech_formatted
+
+    # Update the cache (mtime last, so an interrupted write reads as stale)
+    __tech_stack_cache_store $cache_base.langs $lang_formatted
+    __tech_stack_cache_store $cache_base.mods $tech_formatted
+    __tech_stack_cache_store $cache_base.mtime $current_mtime
 end
