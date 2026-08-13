@@ -13,7 +13,7 @@ end
 #   "label"      - Show only label (e.g., "Node") [DEFAULT]
 #   "icon"       - Show only icon (e.g., "⬡")
 if not set -q TECH_STACK_DISPLAY_FORMAT
-    set -gx TECH_STACK_DISPLAY_FORMAT "label"
+    set -gx TECH_STACK_DISPLAY_FORMAT label
 end
 
 # Color display configuration
@@ -22,7 +22,7 @@ end
 #   "foreground" - Show only foreground color, no background
 #   "none"       - Show no colors (plain text)
 if not set -q TECH_STACK_COLOR_MODE
-    set -gx TECH_STACK_COLOR_MODE "full"
+    set -gx TECH_STACK_COLOR_MODE full
 end
 
 # Version display configuration
@@ -77,6 +77,9 @@ end
 function __tech_stack_install --on-event tech_stack_install
     echo "Tech Stack plugin installed successfully!"
     echo "Configuration files are available in $__fish_config_dir/functions/"
+    echo ""
+    echo "Requires the shared async runtime:"
+    echo "  fisher install rumboon/stacked-core"
     echo ""
     echo "Configuration options:"
     echo "  set -gx TECH_STACK_DISPLAY_FORMAT \"icon_label\"  # Show icons + labels"

@@ -97,7 +97,7 @@ function run_single_tech_test
     set -l expected_icon $argv[3]
 
     # Quick check - just look for the specific rule and test its indicators
-    set -l rule_data (jq -r --arg name "$target_name" '.rules[] | select(.name == $name) | "\(.name)|\(.icon)|\(.file_indicators | join(","))"' $rules_file)
+    set -l rule_data (jq -r --arg name "$target_name" '.rules[] | select(.id == $name) | "\(.id)|\(.icon)|\(.file_indicators | join(","))"' $rules_file)
     if test -z "$rule_data"
         return 1
     end
@@ -128,7 +128,7 @@ function get_language_icon
         set config_file functions/_tech_stack_language_rules.json"
     end
     if command -v jq >/dev/null 2>&1; and test -f $config_file
-        jq -r --arg name "$language_name" '.rules[] | select(.name == $name) | .icon' $config_file
+        jq -r --arg name "$language_name" '.rules[] | select(.id == $name) | .icon' $config_file
     else
         echo "$language_name" # fallback to name if jq not available
     end
@@ -141,7 +141,7 @@ function get_tech_icon
         set config_file functions/_tech_stack_rules.json"
     end
     if command -v jq >/dev/null 2>&1; and test -f $config_file
-        jq -r --arg name "$tech_name" '.rules[] | select(.name == $name) | .icon' $config_file
+        jq -r --arg name "$tech_name" '.rules[] | select(.id == $name) | .icon' $config_file
     else
         echo "$tech_name" # fallback to name if jq not available
     end
@@ -170,7 +170,7 @@ if test -f $language_rules_file; and command -v jq >/dev/null 2>&1
     create_test_directory $batch_test_dir
 
     # Parse all rules at once to avoid repeated jq calls
-    set -l rules_data (jq -r '.rules[] | "\(.name)|\(.icon)|\(.file_indicators[0])"' $language_rules_file)
+    set -l rules_data (jq -r '.rules[] | "\(.id)|\(.icon)|\(.file_indicators[0])"' $language_rules_file)
     for rule_line in $rules_data
         set -l parts (string split "|" $rule_line)
         set -l name $parts[1]
@@ -222,7 +222,7 @@ if test -f $tech_rules_file; and command -v jq >/dev/null 2>&1
     create_test_directory $batch_test_dir
 
     # Parse all rules at once to avoid repeated jq calls
-    set -l rules_data (jq -r '.rules[] | "\(.name)|\(.icon)|\(.file_indicators[0])"' $tech_rules_file)
+    set -l rules_data (jq -r '.rules[] | "\(.id)|\(.icon)|\(.file_indicators[0])"' $tech_rules_file)
     for rule_line in $rules_data
         set -l parts (string split "|" $rule_line)
         set -l name $parts[1]

@@ -11,10 +11,10 @@ Asynchronous technology detection for Fish shell prompts.
 
 ## Installation
 
-Install with [Fisher](https://github.com/jorgebucaran/fisher):
+Install with [Fisher](https://github.com/jorgebucaran/fisher). Requires [stacked-core](https://github.com/rumboon/stacked-core), which provides the shared async runtime (Fisher has no dependency resolution, so install both):
 
 ```fish
-fisher install rumboon/tech-stack
+fisher install rumboon/stacked-core rumboon/tech-stack
 ```
 
 ## Usage
@@ -37,7 +37,8 @@ printf "Mods:  %s\n" $$mods_var
 - `_tech_stack_detection` - Core technology detection logic
 - `_tech_stack_formatting` - Output formatting
 - `_tech_stack_version` - Version detection for languages
-- `_tech_stack_cleanup` - Cleanup function for processes and variables
+
+Worker lifecycle and cleanup are handled by [stacked-core](https://github.com/rumboon/stacked-core).
 
 ## Configuration
 
